@@ -1,0 +1,10 @@
+{:deps {ring/ring-jetty-adapter {:mvn/version "1.14.1"},
+        ring/ring-defaults {:mvn/version "0.6.0"},
+        metosin/reitit-core {:mvn/version "0.8.0"},
+        metosin/reitit-ring {:mvn/version "0.8.0"},
+        metosin/reitit-middleware {:mvn/version "0.8.0"},
+        metosin/reitit-frontend {:mvn/version "0.8.0"},
+        metosin/reitit-spec {:mvn/version "0.8.0"},
+        hiccup/hiccup {:mvn/version "2.0.0-RC5"},
+        }
+ :path ["src/clj"]}
