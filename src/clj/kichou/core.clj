@@ -7,7 +7,7 @@
 (defn handler [_]
   {:status 200
    :headers {"Context-Type" "text/html"}
-   :body "<h1>Hello</h1>"})
+   :body "Hello"})
 
 (defn start-jetty! []
   (jetty/run-jetty handler {:port 3210,
