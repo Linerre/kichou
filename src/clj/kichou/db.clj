@@ -7,7 +7,7 @@
 ;; == Databse =======================================
 (def db-spec
   {:dbtype "sqlite"
-   :dbname "db/expense.db"})
+   :dbname "db/expenses.db"})
 
 (def datasource (jdbc/get-datasource db-spec))
 
@@ -34,46 +34,52 @@
 (defn get-expenses-by-week [week-number]
   (-> (select :*)
       (from :Expenses)
-      (where [:= :week_number week-number])
+      (where [:= :week week-number])
       (query)))
 
-(defn get-expenses-by-provider [provider-abn]
+(defn get-expenses-by-provider-abn [provider-abn]
   (-> (select :*)
       (from :Expenses)
-      (where [:= :provider_abn provider-abn])
+      (where [:= :abn provider-abn])
+      (query)))
+
+(defn get-expenses-by-provider [provider]
+  (-> (select :*)
+      (from :Expenses)
+      (where [:= :provider provider])
       (query)))
 
 (defn get-expenses-with-provider-details []
   (-> (select [:e.expense_id :id]
               [:e.date :date]
-              [:e.week_number :week]
-              [:e.product_name :product]
+              [:e.number :week]
+              [:e.product :product]
               [:e.price :price]
               [:e.quantity :quantity]
-              [:p.full_brand_name :provider_name]
+              [:p.provider_name :provider_name]
               [:p.location :location])
       (from [:Expenses :e])
-      (join [:Providers :p] [:= :e.provider_abn :p.abn])
+      (join [:Providers :p] [:= :e.abn :p.abn])
       (query)))
 
 ;; == Updates =======================================
 
 (defn add-provider [{:keys [abn full-brand-name location website]}]
   (jsql/insert! datasource :Providers
-                {:abn             abn
-                 :full_brand_name full-brand-name
-                 :location        location
-                 :website         website}))
+                {:abn           abn
+                 :provider_name full-brand-name
+                 :location      location
+                 :website       website}))
 
 (defn add-expense
-  [{:keys [date week-number product-name price quantity provider-abn]}]
+  [{:keys [date week-number product-name price quantity abn]}]
   (jsql/insert! datasource :Expenses
-                {:date         date
-                 :week_number  week-number
-                 :product_name product-name
-                 :price        price
-                 :quantity     quantity
-                 :provider_abn provider-abn}))
+                {:date     date
+                 :week     week-number
+                 :product  product-name
+                 :price    price
+                 :quantity quantity
+                 :abn      abn}))
 
 (defn update-provider [abn updates]
   (jsql/update! datasource :Providers updates {:abn abn}))
