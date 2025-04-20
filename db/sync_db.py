@@ -3,7 +3,7 @@ import os
 import sqlite3
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from config import SPREADSHEET_ID, CREDS_PATH, DB_PATH
+from config import SPREADSHEET_ID, CREDS_PATH, DB_PATH, EXPENSE_YEAR2025
 
 
 def create_database(db_path):
@@ -54,7 +54,7 @@ def get_sheets_data(spreadsheet_id, credential_path):
 
     # Get data from expenses sheet
     expenses_result = service.spreadsheets().values().get(
-        spreadsheetId=spreadsheet_id, range='y2025!A:G92').execute()
+        spreadsheetId=spreadsheet_id, range=f'{EXPENSE_YEAR2025}').execute()
     expenses_values = expenses_result.get('values', [])
 
     # Get data from providers sheet
