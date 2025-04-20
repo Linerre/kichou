@@ -15,7 +15,7 @@ def create_database(db_path):
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Providers (
         abn TEXT PRIMARY KEY,
-        full_brand_name TEXT NOT NULL,
+        provider_name TEXT NOT NULL,
         location TEXT,
         website TEXT
     )
@@ -26,19 +26,20 @@ def create_database(db_path):
     CREATE TABLE IF NOT EXISTS Expenses (
         expense_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
-        week_number INTEGER NOT NULL,
-        product_name TEXT NOT NULL,
+        week INTEGER NOT NULL,
+        product TEXT NOT NULL,
         price REAL NOT NULL,
         quantity INTEGER NOT NULL,
-        provider_abn TEXT NOT NULL,
-        FOREIGN KEY (provider_abn) REFERENCES Providers(abn)
+        provider TEXT NOT NULL,
+        abn TEXT NOT NULL,
+        FOREIGN KEY (abn) REFERENCES Providers(abn)
     )
     ''')
 
     # Create helpful indexes
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_expenses_date ON Expenses(date)')
-    cursor.execute('CREATE INDEX IF NOT EXISTS idx_expenses_week ON Expenses(week_number)')
-    cursor.execute('CREATE INDEX IF NOT EXISTS idx_expenses_provider ON Expenses(provider_abn)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_expenses_week ON Expenses(week)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_expenses_abn ON Expenses(abn)')
 
     conn.commit()
     conn.close()
@@ -77,11 +78,11 @@ def import_to_sqlite(expenses_data, providers_data, db_path):
         provider_dict = dict(zip(headers, padded_provider))
 
         cursor.execute('''
-        INSERT OR REPLACE INTO Providers (abn, full_brand_name, website, location)
+        INSERT OR REPLACE INTO Providers (abn, provider_name, website, location)
         VALUES (?, ?, ?, ?)
         ''', (
             provider_dict.get('ABN', ''),
-            provider_dict.get('Brand Full Name', ''),
+            provider_dict.get('Provider Full Name', ''),
             provider_dict.get('Website', ''),
             provider_dict.get('Location', '')
         ))
@@ -94,15 +95,16 @@ def import_to_sqlite(expenses_data, providers_data, db_path):
         expense_dict = dict(zip(headers, padded_expense))
 
         cursor.execute('''
-        INSERT INTO Expenses (date, week_number, product_name, price, quantity, provider_abn)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO Expenses (date, week, product, price, quantity, provider, abn)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (
             expense_dict.get('Date', ''),
             int(expense_dict.get('Week', 0)),
             expense_dict.get('ProductName', ''),
             float(expense_dict.get('Price', 0)),
             int(expense_dict.get('Quantity', 0)),
-            expense_dict.get('Provider', '')  # This should match an ABN in Providers table
+            expense_dict.get('Provider', ''),
+            expense_dict.get('ProviderABN', '')  # This should match an ABN in Providers table
         ))
 
     conn.commit()
