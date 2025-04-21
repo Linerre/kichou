@@ -16,4 +16,11 @@
         com.github.seancorfield/honeysql  {:mvn/version "2.7.1295"},
         ;; use HikariCP or c3p0 for connection pooling if necessary
         }
- :path ["src"]}
+
+ :aliases
+ {:dev
+  {:extra-paths ["dev"]
+   :extra-deps {ring/ring-devel {:mvn/version "1.14.1"}}
+   :main-opts ["-m" "hotreload"]}}
+
+ :paths ["src/clj"]}
