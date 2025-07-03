@@ -2,8 +2,7 @@
 (ns hotreload
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
-            [kichou.server :refer [handler]])
-  (:gen-class))
+            [kichou.server :refer [handler]]))
 
 (defonce server (atom nil))
 
@@ -26,3 +25,5 @@
   (start-server! 9000))
 
 (comment (-main))
+
+(comment (stop-server!))
