@@ -41,14 +41,14 @@
          [:th "Website"]
          [:th "Actions"]]]
        [:tbody
-        ;; (for [provider providers]
-        ;;   [:tr
-        ;;    [:td (:providers/abn provider)]
-        ;;    [:td (:providers/provider_name provider)]
-        ;;    [:td (:providers/location provider)]
-        ;;    [:td (:providers/website provider)]
-        ;;    [:td
-        ;;     [:a {:href (str "/provider/" (:providers/abn provider))} "View"]]])
+        (for [provider providers]
+          [:tr
+           [:td (:providers/abn provider)]
+           [:td (:providers/provider_name provider)]
+           [:td (:providers/location provider)]
+           [:td (:providers/website provider)]
+           [:td
+            [:a {:href (str "/provider/" (:providers/abn provider))} "View"]]])
         ]]
       [:h2 "Add New Provider"]
       [:form {:action "/add-provider" :method "post"}
@@ -57,3 +57,8 @@
        [:div [:label "Location: "] [:input {:type "text" :name "location"}]]
        [:div [:label "Website: "] [:input {:type "text" :name "website"}]]
        [:div [:input {:type "submit" :value "Add Provider"}]]]])))
+
+
+(defn not-found []
+  [:div
+   [:h1 "Page Not Found"]])
