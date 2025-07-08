@@ -27,6 +27,7 @@
       [:li [:a {:href "/expenses"} "View All Expenses"]]
       [:li [:a {:href "/expenses-with-details"} "View Expenses With Provider Details"]]]]))
 
+;; TODO: allow editing of a provider
 (defn providers []
   (let [providers (db/get-all-providers)]
     (render-html
@@ -43,12 +44,12 @@
        [:tbody
         (for [provider providers]
           [:tr
-           [:td (:providers/abn provider)]
-           [:td (:providers/provider_name provider)]
-           [:td (:providers/location provider)]
-           [:td (:providers/website provider)]
+           [:td (:Providers/abn provider)]
+           [:td (:Providers/provider_name provider)]
+           [:td (:Providers/location provider)]
+           [:td (or (:Providers/website provider) "N/A")]
            [:td
-            [:a {:href (str "/provider/" (:providers/abn provider))} "View"]]])
+            [:a {:href (str "/provider/" (:abn provider))} "View"]]])
         ]]
       [:h2 "Add New Provider"]
       [:form {:action "/add-provider" :method "post"}

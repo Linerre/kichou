@@ -92,3 +92,5 @@
 
 (defn delete-expense [expense-id]
   (jsql/delete! datasource :Expenses {:expense_id expense-id}))
+
+(comment (get-all-providers))
