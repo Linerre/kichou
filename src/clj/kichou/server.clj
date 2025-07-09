@@ -2,7 +2,7 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [reitit.ring :as rr]
-            [kichou.route :as route]
+            [kichou.route :refer [router]]
             [kichou.handler :refer [not-found]]))
 
 ;; To use a atom as server, see: https://gist.github.com/plexus/19ef2874d9f0c56e458e78c2e1103f16
@@ -19,9 +19,7 @@
 
 (def app
   (rr/ring-handler
-    (rr/router
-      route/routes)
-
+    router
     (rr/create-default-handler
       {:not-found not-found})))
 
