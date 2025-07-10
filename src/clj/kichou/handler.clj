@@ -1,5 +1,6 @@
 (ns kichou.handler
   (:require
+   [ring.util.response :as util]
    [kichou.page :as page]))
 
 
@@ -8,12 +9,10 @@
    :headers {"Content-Type" "text/html"}
    :body    (page/home)})
 
-(defn providers-info [req]
+(defn providers-info [_req]
   {:status  200,
    :headers {"Content-Type" "text/html"}
    :body    (page/providers)})
 
 (defn not-found []
-  {:status  404
-   :headers {"Content-Type" "text/html"}
-   :body    (page/not-found)})
+  (util/not-found))
