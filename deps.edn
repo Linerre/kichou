@@ -25,4 +25,4 @@
    :extra-deps  {ring/ring-devel {:mvn/version "1.14.1"}}
    :main-opts   ["-m" "hotreload"]}}
 
- :paths ["src/clj"]}
+ :paths ["src"]}
