@@ -1,8 +1,9 @@
 *cpcache*
 *repl*
 *pycache*
-
 *.db
-
+.nrepl-port
 config.py
 gsheet/
+node_modules/
+.shadow-cljs/

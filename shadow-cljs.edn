@@ -1,0 +1,8 @@
+{:deps     {:aliases [:cljs]}
+ :dev-http {8080 ["public" "build"]}
+ :builds   {:app {:target     :esm
+                  :output-dir "public/js"
+                  :release    {:output-dir "dist/kichou/js"}
+                  :modules    {:main {:init-fn kichou.app/-main
+                                      :depends-on #{:shared}}
+                               :shared {:entries []}}}}}
